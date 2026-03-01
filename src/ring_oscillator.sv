@@ -24,6 +24,27 @@
 module ring_oscillator #(parameter DEPTH = 3)(
     output logic bit_o // randomly sampled bit
 );
-// TODO: implement
+  localparam NUM_INVS = (2 * DEPTH) + 1;
+
+  (* keep = "true" *) logic [NUM_INVS-1:0] inv_array;
+
+  genvar i;
+  generate
+    for (i = 0; i < NUM_INVS; i = i + 1) begin
+      if (i == 0) begin
+        (* keep = "true" *) sg13g2_inv_1 inv (
+          .Y(inv_array[0]),
+          .A(inv_array[NUM_INVS-1])
+          );
+      end else begin
+      (* keep = "true" *) sg13g2_inv_1 inv (
+          .Y(inv_array[i]),
+          .A(inv_array[i-1])
+          );
+      end
+    end
+  endgenerate
+
+  assign bit_o = inv_array[0];
 
 endmodule

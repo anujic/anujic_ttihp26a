@@ -46,4 +46,23 @@ module top (
 );
 
 // TODO: implement the module
+
+// Three different ring oscillators to prevent synchronization with clk
+logic bit_3, bit_5, bit_7, random_oscillator_bit;
+
+ring_oscillator #(DEPTH=3) i_ring_oscillator_3 (
+    .bit_o(bit_3)
+)
+ring_oscillator #(DEPTH=5) i_ring_oscillator_5 (
+    .bit_o(bit_5)
+)
+ring_oscillator #(DEPTH=7) i_ring_oscillator_7 (
+    .bit_o(bit_7)
+)
+
+assign random_oscillator_bit = bit_3 ^ bit_5 ^ bit_7;
+
+// Von Neumann Whitener FSM:
+
+
 endmodule
