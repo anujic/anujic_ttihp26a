@@ -18,7 +18,7 @@
  * indicating a stall in the entropy generation pipeline.
  ******************************************************************************/
 
-module watchdog_timer #(parameter TIMEOUT = 1024)n(
+module watchdog_timer #(parameter TIMEOUT = 1024) (
     input logic clk_i,
     input logic rst_ni, 
     input logic en_i, // enables the watchdog
