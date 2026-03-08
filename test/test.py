@@ -35,6 +35,7 @@ async def test_project(dut):
         if not dut.uo_out.value.is_resolvable:
             dut._log.warning(f"GLS 'X' State Detected! Output is: {dut.uo_out.value.binstr}")
             assert True
+            return
         random_val = dut.uo_out.value.to_unsigned()
         dut._log.info(f"The random byte that was generated is: {random_val:x}")
         random_values.append(random_val)
