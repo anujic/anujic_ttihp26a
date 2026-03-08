@@ -3,7 +3,7 @@
 
 import cocotb
 from cocotb.clock import Clock
-from cocotb.triggers import ClockCycles, RisingEdge
+from cocotb.triggers import ClockCycles, Edge
 
 
 @cocotb.test()
@@ -27,8 +27,7 @@ async def test_project(dut):
 
     # Set the input values you want to test
     dut.ui_in.value = 1 # Assert ready_i signal
-    valid_i = dut.uio_out[0]
-    await RisingEdge(valid_i) # Wait until valid_o signal is high
+    await Edge(dut.uio_out) # Wait until valid_o signal is high
 
     random_val = dut.uo_out.value
     dut._log.info(f"The random byte that was generated is: {random_val:x}")
