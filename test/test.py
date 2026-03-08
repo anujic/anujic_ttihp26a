@@ -29,7 +29,7 @@ async def test_project(dut):
     dut.ui_in.value = 1 # Assert ready_i signal
     await Edge(dut.uio_out) # Wait until valid_o signal is high
 
-    random_val = dut.uo_out.value
+    random_val = dut.uo_out.value.integer
     dut._log.info(f"The random byte that was generated is: {random_val:x}")
 
     assert 1 == 1 # Just so we get a green light at the end :)
