@@ -26,7 +26,7 @@ module tt_um_anujic_rng (
     .ready_i(ui_in[0]),
     .byte_o(uo_out),
     .valid_o(uio_out[0])
-  )
+  );
   // List all unused inputs to prevent warnings
   logic _unused = &{ena, 1'b0};
 
