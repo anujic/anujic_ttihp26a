@@ -86,7 +86,7 @@ always_comb begin
         counter_d = counter_q + 1;
     end
     if (counter_rst) begin
-        counter_d = 1'b0;
+        counter_d = '0;
     end
 end
 
