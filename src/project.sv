@@ -28,6 +28,6 @@ module tt_um_anujic_rng (
     .valid_o(uio_out[0])
   );
   // List all unused inputs to prevent warnings
-  logic _unused = &{ena, 1'b0};
+  logic _unused = &{ena, uio_in, 1'b0};
 
 endmodule

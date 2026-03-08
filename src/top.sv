@@ -187,5 +187,6 @@ watchdog_timer #(.TIMEOUT(1024)) i_watchdog (
 );
 
 assign valid_o = (counter_q == 7);
+assign byte_o  = byte_q;
 
 endmodule
