@@ -37,7 +37,8 @@ Raw ring oscillators often exhibit a slight bias (e.g., naturally preferring `1`
 
 
 
-**I/O:** ~~~verilog
+**I/O:**
+~~~verilog
     input  logic clk_i,   // System Clock
     input  logic rst_ni,  // System Reset
     input  logic ena_i,   // System enable signal
