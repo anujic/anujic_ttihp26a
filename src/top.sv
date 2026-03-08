@@ -149,9 +149,11 @@ always_ff @(posedge clk_i or negedge rst_ni) begin
     if (!rst_ni) begin
         state_q <= FIRST_BIT;
         first_bit_q <= 1'b0;
+        clean_bit_q <= 1'b0;
     end else begin
         state_q <= state_d;
         first_bit_q <= first_bit_d;
+        clean_bit_q <= clean_bit_d;
     end
  end
 
