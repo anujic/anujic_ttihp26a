@@ -17,11 +17,17 @@ module tt_um_anujic_rng (
 );
 
   // All output pins must be assigned. If not used, assign to 0.
-  assign uo_out  = ui_in + uio_in;  // Example: ou_out is the sum of ui_in and uio_in
-  assign uio_out = 0;
+  assign uio_out[7:1] = 0;
   assign uio_oe  = 0;
 
+  top i_hw_rng (
+    .clk_i(clk),
+    .rst_ni(rst_n),
+    .ready_i(ui_in[0]),
+    .byte_o(uo_out),
+    .valid_o(uio_out[0])
+  )
   // List all unused inputs to prevent warnings
-  logic _unused = &{ena, clk, rst_n, 1'b0};
+  logic _unused = &{ena, 1'b0};
 
 endmodule

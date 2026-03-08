@@ -51,13 +51,13 @@ logic bit_3, bit_5, bit_7, random_oscillator_bit;
 
 ring_oscillator #(.DEPTH(3)) i_ring_oscillator_3 (
     .bit_o(bit_3)
-)
+);
 ring_oscillator #(.DEPTH(5)) i_ring_oscillator_5 (
     .bit_o(bit_5)
-)
+);
 ring_oscillator #(.DEPTH(7)) i_ring_oscillator_7 (
     .bit_o(bit_7)
-)
+);
 
 assign random_oscillator_bit = bit_3 ^ bit_5 ^ bit_7;
 
@@ -112,7 +112,6 @@ typedef enum logic {
 
 always_comb begin 
     state_d = state_q;
-    valid_o = 1'b0;
     first_bit_d = first_bit_q;
     counter_en = 1'b0;
     clean_bit_d = clean_bit_q;
@@ -128,7 +127,7 @@ always_comb begin
         SECOND_BIT: begin
             if(ready_i) begin
                 if (sync_2 ^ first_bit_q) begin
-                    clean_bit_d = first_bit_q ^ sync_2;
+                    clean_bit_d = sync_2;
                     counter_en = 1'b1;
                     valid_bit = 1'b1;
                 end
@@ -163,12 +162,17 @@ logic [7:0] byte_q, byte_d;
 genvar i;
 generate 
     for (i = 0; i < 8 ;i++ ) begin
-        byte_d = byte_q;
-        if (i == counter_q) begin
-            byte_d[i] = clean_bit_q;
-        end
+        assign byte_d[i] = (i == counter_q) ? clean_bit_q : byte_q[i];
     end
 endgenerate
+
+always_ff @(posedge clk_i or negedge rst_ni) begin
+    if (!rst_ni) begin
+        byte_q <= '0;
+    end else begin
+        byte_q <= byte_d;
+    end
+end
 
 // Watchdog module
 
@@ -178,7 +182,7 @@ watchdog_timer #(.TIMEOUT(1024)) i_watchdog (
     .en_i(ready_i),
     .pet_i(valid_bit),
     .timeout_o(wd_timeout)
-)
+);
 
 assign valid_o = (counter_q == 7);
 
