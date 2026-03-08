@@ -25,7 +25,23 @@ module ring_oscillator #(parameter DEPTH = 3)(
     output logic bit_o // randomly sampled bit
 );
   localparam NUM_INVS = (2 * DEPTH) + 1;
+`ifdef SIM
+  logic sim_osc;
 
+  // Initialize the oscillator so it doesn't get stuck at 'X'
+  initial begin
+      sim_osc = 1'b0;
+  end
+
+  // Toggle the signal with an artificial delay. 
+  // The delay scales with DEPTH so ro_3, ro_5, and ro_7 will drift apart.
+  always begin
+      #(DEPTH * 2 + 1) sim_osc = ~sim_osc; 
+  end
+
+  assign bit_o = sim_osc;
+
+`else
   (* keep = "true" *) logic [NUM_INVS-1:0] inv_array;
 
   genvar i;
@@ -46,5 +62,6 @@ module ring_oscillator #(parameter DEPTH = 3)(
   endgenerate
 
   assign bit_o = inv_array[0];
+`endif
 
 endmodule
