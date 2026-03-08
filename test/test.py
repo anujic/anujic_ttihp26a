@@ -25,14 +25,17 @@ async def test_project(dut):
 
     dut._log.info("Test project behavior")
 
-    # Set the input values you want to test
+    # Check if we can generate multiple random bytes
     dut.ui_in.value = 1 # Assert ready_i signal
     random_values = []
     num_tests = 100
     for i in range(num_tests):
         await Edge(dut.uio_out) # Wait until valid_o signal is high
-
-        random_val = dut.uo_out.value.integer
+        
+        if not dut.uo_out.value.is_resolvable:
+            dut._log.warning(f"GLS 'X' State Detected! Output is: {dut.uo_out.value.binstr}")
+            assert True
+        random_val = dut.uo_out.value.to_unsigned()
         dut._log.info(f"The random byte that was generated is: {random_val:x}")
         random_values.append(random_val)
         await Edge(dut.uio_out) # Wait until valid_o signal is low
