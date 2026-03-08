@@ -18,7 +18,7 @@ module tt_um_anujic_rng (
 
   // All output pins must be assigned. If not used, assign to 0.
   assign uio_out[7:1] = 0;
-  assign uio_oe  = 0;
+  assign uio_oe[7:1]  = 0;
 
   top i_hw_rng (
     .clk_i(clk),
@@ -27,6 +27,7 @@ module tt_um_anujic_rng (
     .byte_o(uo_out),
     .valid_o(uio_out[0])
   );
+  assign uio_oe[0] = 1'b1; // Output
   // List all unused inputs to prevent warnings
   logic _unused = &{ena, uio_in, ui_in[7:1], 1'b0};
 
